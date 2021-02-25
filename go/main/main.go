@@ -1,21 +1,45 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
+
+// ClassRoom "班级"类型
+type ClassRoom struct {
+	// 如 json:"id" 是为了方便前端的使用
+	ID          uint   `gorm:"column:id" json:"id"`
+	Name        string `gorm:"type:varchar(255);column:name" json:"name"`
+	Description string `gorm:"column:description" json:"description"`
+}
 
 func main() {
 	r := gin.Default()
 	//开启中间件 允许使用跨域请求
 	r.Use(Cors())
 
+	// 连接数据库
+	// 参考 https://github.com/go-sql-driver/mysql#dsn-data-source-name 获取详情
+	// TODO: 如账号、密码等抽成常量去方便开发与维护
+	dsn := "root:CYByob123@tcp(81.70.161.16:3306)/go_project_demo?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		fmt.Println("连接失败")
+		fmt.Println(err)
+	}
+
 	r.GET("classRooms", func(c *gin.Context) {
+		var data []ClassRoom
+		db.Table("classRoom").Find((&data))
+		fmt.Println("data", data)
 		c.JSON(200, gin.H{
 			"code":    0,
-			"data":    "list",
+			"data":    data,
 			"message": "",
 		})
 	})

@@ -10,7 +10,7 @@ class Client {
 
     static getClassRoomList() {
         const url = `classRooms`;
-        return axios.get(url);
+        return axios.get(url).then(res => Promise.resolve(res.data));
     }
 }
 
