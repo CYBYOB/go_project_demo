@@ -38,23 +38,25 @@ func main() {
 		db.Table("classRoom").Find((&data))
 		fmt.Println("data", data)
 		c.JSON(200, gin.H{
-			"code":    0,
-			"data":    data,
-			"message": "",
+			"code": 0,
+			"data": data,
+			"msg":  "",
 		})
 	})
 	r.GET("/classRoom/:classRoomID", func(c *gin.Context) {
 		// name := c.Param("classRoomID")
 		c.JSON(200, gin.H{
-			"message": "CYB",
+			"code": 0,
+			"data": "xx",
+			"msg":  "CYB",
 		})
 	})
 
 	r.GET("/cyb", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"code":    0,
-			"data":    "CYB",
-			"message": "",
+			"code": 0,
+			"data": "CYB",
+			"msg":  "",
 		})
 	})
 

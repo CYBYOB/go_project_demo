@@ -12,6 +12,11 @@ class Client {
         const url = `classRooms`;
         return axios.get(url).then(res => Promise.resolve(res.data));
     }
+
+    static getClassRoomInfo(classRoomID) {
+        const url = `classRoom/${classRoomID}`;
+        return axios.get(url).then(res => Promise.resolve(res.data));
+    }
 }
 
 export default Client;

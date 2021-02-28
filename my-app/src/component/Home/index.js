@@ -27,7 +27,7 @@ class Home extends Component {
     componentDidMount() {
         Client.getClassRoomList().then(res => {
             const {code, data, msg} = res;
-            if (!code) {
+            if (code) {
                 this.setState({
                     classRoomList: data
                 })
