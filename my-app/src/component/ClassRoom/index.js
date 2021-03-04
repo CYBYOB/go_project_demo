@@ -1,5 +1,10 @@
 
 import React, {Component} from 'react';
+import {
+    Button
+} from 'antd';
+import './classRoom.less';
+
 import Client from '../../api';
 
 class ClassRoom extends Component {
@@ -13,18 +18,26 @@ class ClassRoom extends Component {
                 description: '-',
                 studentNum: 0,
             },
-            
+
             // student表格
             studentList: [],
         }
     }
     componentDidMount() {
-        Client.getClassRoomInfo().then(res => {
+        const {classRoomID} = this.props.match.params;
+        this.getClassRoomInfoById(classRoomID);
+    }
+    getClassRoomInfoById(classRoomID) {
+        Client.getClassRoomInfo(classRoomID).then(res => {
             const {code, data, msg} = res;
-            // if (code) {
-            //     this.setState()
-            // }
-        })
+            if (!code) {
+                const {classRoom} = this.state;
+                const {id, name, description} = data;
+                this.setState({
+                    classRoom: Object.assign(classRoom, {id, name, description})
+                });
+            }
+        });
     }
 
     render() {
@@ -40,7 +53,9 @@ class ClassRoom extends Component {
                         <div>班级描述：{description}</div>
                         <div>班级总人数：{studentNum}</div>
                     </div>
-                    <div className="eidt"></div>
+                    <div className="eidt">
+                        <Button type="primary">编辑</Button>
+                    </div>
                 </div>
             </div>
         )

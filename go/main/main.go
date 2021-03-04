@@ -37,18 +37,23 @@ func main() {
 		var data []ClassRoom
 		db.Table("classRoom").Find((&data))
 		fmt.Println("data", data)
+
 		c.JSON(200, gin.H{
 			"code": 0,
 			"data": data,
 			"msg":  "",
 		})
 	})
+
 	r.GET("/classRoom/:classRoomID", func(c *gin.Context) {
-		// name := c.Param("classRoomID")
+		classRoomID := c.Param("classRoomID")
+		var data ClassRoom
+		db.Table("classRoom").Where("id = ?", classRoomID).Find(&data)
+
 		c.JSON(200, gin.H{
 			"code": 0,
-			"data": "xx",
-			"msg":  "CYB",
+			"data": data,
+			"msg":  "",
 		})
 	})
 
