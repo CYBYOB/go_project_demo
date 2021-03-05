@@ -17,8 +17,10 @@ class App extends Component {
     render() {
         return (
             <Router>
+                {/* 优点：通过类RESTful API风格的url快速区别不同的页面路径值 */}
                 <Route exact path="/" component={Home} />
                 <Route exact path="/classRoom/:classRoomID" component={ClassRoom} />
+                {/* 将 edit 变更为 post 会更好？ */}
                 <Route exact path="/classRoom/:classRoomID/edit" component={ClassRoomEdit} />
             </Router>
         )

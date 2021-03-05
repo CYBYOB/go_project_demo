@@ -16,25 +16,33 @@ class Client {
     }
 
     // 后端返回数据的统一化处理入口，TODO：状态码 等的统一化处理。
-    static formatResponse(url, method) {
-        return axios.request({url, method}).then(res => Promise.resolve(res.data));
+    static formatResponse(url, method, params, data) {
+        return axios.request({url, method, params, data}).then(res => Promise.resolve(res.data));
     }
 
-    // 获取学生列表
+    // 更新 班级信息（目前仅支持 description 的变更）
+    static updateClassRoomInfo(classRoomID, classRoom) {
+        const url = `classRoom/${classRoomID}`; 
+        return this.formatResponse(url, POST, classRoom, classRoom);
+    }
+
+    // 获取 学生列表
     static getStudentList(classRoomID) {
         const url = `classRoom/${classRoomID}/students`;
         return this.formatResponse(url, GET);
     }
 
-    static getClassRoomList() {
-        const url = `classRooms`;
+    // 获取 班级信息
+    static getClassRoomInfo(classRoomID) {
+        const url = `classRoom/${classRoomID}`;
         return this.formatResponse(url, GET);
     }
 
-    static getClassRoomInfo(classRoomID) {
-        const url = `classRoom/${classRoomID}`;
-        return this.formatResponse(url, GET)
-    }
+    // 获取 班级列表
+    static getClassRoomList() {
+        const url = `classRooms`;
+        return this.formatResponse(url, GET);
+    }    
 }
 
 export default Client;

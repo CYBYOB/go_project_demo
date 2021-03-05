@@ -43,6 +43,13 @@ func main() {
 		fmt.Println(err)
 	}
 
+	// 进行 某班级信息 的变更（目前仅支持 description 的变更）
+	r.POST("classRoom/:classRoomID", func(c *gin.Context) {
+		var classRoomID = c.Param("classRoomID")
+		db.Table("classRoom").Where("id = ?", classRoomID).Update("description", "ss")
+	})
+
+	// 获取 某班级里的 所有学生列表
 	r.GET(("classRoom/:classRoomID/students"), func(c *gin.Context) {
 		var classRoomID = c.Param("classRoomID")
 		var data []Student
@@ -55,9 +62,11 @@ func main() {
 		})
 	})
 
-	r.GET("classRooms", func(c *gin.Context) {
-		var data []ClassRoom
-		db.Table("classRoom").Find(&data)
+	// 获取 具体的班级信息
+	r.GET("/classRoom/:classRoomID", func(c *gin.Context) {
+		classRoomID := c.Param("classRoomID")
+		var data ClassRoom
+		db.Table("classRoom").Where("id = ?", classRoomID).Find(&data)
 
 		c.JSON(200, gin.H{
 			"code": 0,
@@ -66,10 +75,10 @@ func main() {
 		})
 	})
 
-	r.GET("/classRoom/:classRoomID", func(c *gin.Context) {
-		classRoomID := c.Param("classRoomID")
-		var data ClassRoom
-		db.Table("classRoom").Where("id = ?", classRoomID).Find(&data)
+	// 获取 班级列表
+	r.GET("classRooms", func(c *gin.Context) {
+		var data []ClassRoom
+		db.Table("classRoom").Find(&data)
 
 		c.JSON(200, gin.H{
 			"code": 0,
@@ -98,9 +107,9 @@ func Cors() gin.HandlerFunc {
 			//接收客户端发送的origin （重要！）
 			c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
 			//服务器支持的所有跨域请求的方法
-			c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE,UPDATE")
+			c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
 			//允许跨域设置可以返回其他子段，可以自定义字段
-			c.Header("Access-Control-Allow-Headers", "Authorization, Content-Length, X-CSRF-Token, Token,session")
+			c.Header("Access-Control-Allow-Headers", "Authorization, Content-Length, X-CSRF-Token, Token, session")
 			// 允许浏览器（客户端）可以解析的头部 （重要）
 			c.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers")
 			//设置缓存时间
