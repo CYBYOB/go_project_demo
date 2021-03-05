@@ -20,6 +20,12 @@ class Client {
         return axios.request({url, method}).then(res => Promise.resolve(res.data));
     }
 
+    // 获取学生列表
+    static getStudentList(classRoomID) {
+        const url = `classRoom/${classRoomID}/students`;
+        return this.formatResponse(url, GET);
+    }
+
     static getClassRoomList() {
         const url = `classRooms`;
         return this.formatResponse(url, GET);

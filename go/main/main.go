@@ -18,6 +18,16 @@ type ClassRoom struct {
 	Description string `gorm:"column:description" json:"description"`
 }
 
+// Student "学生"类型
+type Student struct {
+	ID          uint   `gorm:"column:id" json:"id"`
+	Name        string `gorm:"type:varchar(255);column:name" json:"name"`
+	Sex         string `gorm:"column:sex" json:"sex"`
+	Age         string `gorm:"column:age" json:"age"`
+	Description string `gorm:"column:description" json:"description"`
+	ClassID     string `gorm:"column:class_id" json:"class_id"`
+}
+
 func main() {
 	r := gin.Default()
 	//开启中间件 允许使用跨域请求
@@ -33,10 +43,21 @@ func main() {
 		fmt.Println(err)
 	}
 
+	r.GET(("classRoom/:classRoomID/students"), func(c *gin.Context) {
+		var classRoomID = c.Param("classRoomID")
+		var data []Student
+		db.Table("student").Where("class_id = ?", classRoomID).Find(&data)
+
+		c.JSON(200, gin.H{
+			"code": 0,
+			"data": data,
+			"msg":  "",
+		})
+	})
+
 	r.GET("classRooms", func(c *gin.Context) {
 		var data []ClassRoom
-		db.Table("classRoom").Find((&data))
-		fmt.Println("data", data)
+		db.Table("classRoom").Find(&data)
 
 		c.JSON(200, gin.H{
 			"code": 0,
