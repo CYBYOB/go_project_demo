@@ -123,7 +123,7 @@ class ClassRoom extends Component {
                         <Button className="all-update-btn" type="primary">一键更新该班级下所有学生信息</Button>
                         <Button type="primary">+ 添加学生</Button>
                     </div>
-                    <Table className="table" dataSource={studentList} columns={studentColumns}>
+                    <Table className="table" rowKey="id" dataSource={studentList} columns={studentColumns}>
                     </Table>
                 </div>
             </div>
