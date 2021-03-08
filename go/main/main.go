@@ -47,6 +47,12 @@ func main() {
 	r.POST("classRoom/:classRoomID", func(c *gin.Context) {
 		var classRoomID = c.Param("classRoomID")
 		db.Table("classRoom").Where("id = ?", classRoomID).Update("description", "ss")
+
+		c.JSON(200, gin.H{
+			"code": 0,
+			"data": classRoomID,
+			"msg":  "",
+		})
 	})
 
 	// 获取 某班级里的 所有学生列表
@@ -108,8 +114,8 @@ func Cors() gin.HandlerFunc {
 			c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
 			//服务器支持的所有跨域请求的方法
 			c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")
-			//允许跨域设置可以返回其他子段，可以自定义字段
-			c.Header("Access-Control-Allow-Headers", "Authorization, Content-Length, X-CSRF-Token, Token, session")
+			//允许跨域设置可以返回其他子段，可以自定义字段。必须加上 "Content-Type, Access-Token" ，不然在 POST时的OPTIONS预检请求会报错
+			c.Header("Access-Control-Allow-Headers", "Content-Type, Access-Token, Authorization, Content-Length, X-CSRF-Token, Token, session")
 			// 允许浏览器（客户端）可以解析的头部 （重要）
 			c.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers")
 			//设置缓存时间
