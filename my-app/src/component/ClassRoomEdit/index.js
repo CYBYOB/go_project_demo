@@ -41,7 +41,9 @@ class ClassRoomEdit extends Component {
         const {classRoomID, description} = this.state;
         Client.updateClassRoomInfo(classRoomID, {description}).then(res => {
             const {code, data, msg} = res;
-            debugger
+            if (!code) {
+                window.location.href = `/classRoom/${classRoomID}`;
+            }
         })
     }
 

@@ -46,11 +46,14 @@ func main() {
 	// 进行 某班级信息 的变更（目前仅支持 description 的变更）
 	r.POST("classRoom/:classRoomID", func(c *gin.Context) {
 		var classRoomID = c.Param("classRoomID")
-		db.Table("classRoom").Where("id = ?", classRoomID).Update("description", "ss")
+		json := make(map[string]interface{}) //注意该结构接受的内容
+		c.BindJSON(&json)
+
+		db.Table("classRoom").Where("id = ?", classRoomID).Update("description", json["description"])
 
 		c.JSON(200, gin.H{
 			"code": 0,
-			"data": classRoomID,
+			"data": gin.H{"classRoomID": classRoomID, "description": json["description"]},
 			"msg":  "",
 		})
 	})
